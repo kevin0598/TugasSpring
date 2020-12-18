@@ -30,4 +30,7 @@ public interface DesaRepository extends JpaRepository<DesaEntity, Integer> {
 	List<DesaEntity> findBykodeKecamatan(String Kode);
 
 	DesaEntity findByKodeDesa(String kode);
+	
+	@Query(value="SELECT nama_desa FROM desa WHERE nama_desa=?",nativeQuery = true)
+	String findNama(String string);
 }

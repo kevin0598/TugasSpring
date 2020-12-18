@@ -44,6 +44,7 @@ public class DesaController {
 
 	@PostMapping("/post")
 	public ResponseEntity<?> post(@RequestBody DesaDto Dto) {
+		String nama=repo3.findNama(Dto.getNamaDesa());
 		String kode3 = repo2.findKecamatan(Dto.getKodeKecamatan());
 		String kode2 = repo2.findByEntity(Dto.getKodeKecamatan());
 		String kode = repo.findByEntity(Dto.getKodeKabupaten());
@@ -88,6 +89,11 @@ public class DesaController {
 			result.setMessage("Salah Kode Kabupaten");
 			result.setData(null);
 			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaDesa().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Desa sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
 		} else {
 			DesaEntity desaEntity = service.post(Dto);
 			result.setStatus(HttpStatus.OK.value());
@@ -99,6 +105,7 @@ public class DesaController {
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> post(@PathVariable Integer id, @RequestBody DesaDto Dto) {
+		String nama=repo3.findNama(Dto.getNamaDesa());
 		String kode3 = repo3.findKecamatan(id);
 		String kode = repo3.findKabupaten(id);
 		String kode2 = repo3.findProvinsi(id);
@@ -143,7 +150,12 @@ public class DesaController {
 			result.setMessage("Berbeda Kode Kecamatan");
 			result.setData(null);
 			return ResponseEntity.ok(result);
-		} else {
+		}else if (Dto.getNamaDesa().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Desa sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		}  else {
 			DesaEntity desaEntity = service.update(id, Dto);
 			result.setStatus(HttpStatus.OK.value());
 			result.setMessage("Berhasil Update");

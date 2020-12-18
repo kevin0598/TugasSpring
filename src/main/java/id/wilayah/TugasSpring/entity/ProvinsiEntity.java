@@ -18,7 +18,7 @@ public class ProvinsiEntity implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "kodeProvinsi", nullable = true)
+	@Column(name = "kodeProvinsi",unique = true, nullable = true)
 	private String kodeProvinsi;
 
 	@Column(name = "namaProvinsi", nullable = true)

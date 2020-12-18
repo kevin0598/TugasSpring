@@ -30,4 +30,7 @@ public interface KecamatanRepository extends JpaRepository<KecamatanEntity, Inte
 
 	@Query(value = "select * from kecamatan where kode_kabupaten=?", nativeQuery = true)
 	List<KecamatanEntity> findBykodeKabupaten(String Kode);
+	
+	@Query(value="SELECT nama_kecamatan FROM kecamatan WHERE nama_kecamatan=?",nativeQuery = true)
+	String findNama(String string);
 }

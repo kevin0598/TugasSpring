@@ -40,6 +40,7 @@ public class KecamatanController {
 
 	@PostMapping("/post")
 	public ResponseEntity<?> post(@RequestBody KecamatanDto Dto) {
+		String nama=repo2.findNama(Dto.getNamaKecamatan());
 		String kode = repo.findByEntity(Dto.getKodeKabupaten());
 		StatusMessageDto<KecamatanEntity> result = new StatusMessageDto<>();
 		if (Dto.getKodeKabupaten().isEmpty()) {
@@ -67,7 +68,12 @@ public class KecamatanController {
 			result.setMessage("Salah Kode Provinsi atau Kode Kabupaten");
 			result.setData(null);
 			return ResponseEntity.ok(result);
-		} else {
+		} else if (Dto.getNamaKecamatan().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Kecamatan sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		}  else {
 			KecamatanEntity kecamatanEntity = service.insert(Dto);
 			result.setStatus(HttpStatus.OK.value());
 			result.setMessage("Berhasil Insert");
@@ -78,6 +84,7 @@ public class KecamatanController {
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> post(@PathVariable Integer id, @RequestBody KecamatanDto Dto) {
+		String nama=repo2.findNama(Dto.getNamaKecamatan());
 		String kode = repo2.findKabupaten(id);
 		String kode2 = repo2.findProvinsi(id);
 		StatusMessageDto<KecamatanEntity> result = new StatusMessageDto<>();
@@ -109,6 +116,11 @@ public class KecamatanController {
 		} else if (!kode2.equals(Dto.getKodeProvinsi())) {
 			result.setStatus(HttpStatus.BAD_REQUEST.value());
 			result.setMessage("Berbeda Kode Provinsi");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaKecamatan().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Kecamatan sudah ada");
 			result.setData(null);
 			return ResponseEntity.ok(result);
 		} else {

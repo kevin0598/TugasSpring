@@ -18,4 +18,8 @@ public interface ProvinsiRepository extends JpaRepository<ProvinsiEntity, Intege
 	List<ProvinsiEntity> findStatus(String string);
 	
 	ProvinsiEntity findByKodeProvinsi(String kodeProvinsi);
+	
+	@Query(value="SELECT nama_provinsi FROM `provinsi` WHERE nama_provinsi=?",nativeQuery = true)
+	String findNama(String string);
+	
 }

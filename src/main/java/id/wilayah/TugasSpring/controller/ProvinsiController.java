@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import id.wilayah.TugasSpring.dto.ProvinsiDto;
 import id.wilayah.TugasSpring.dto.StatusMessageDto;
 import id.wilayah.TugasSpring.entity.ProvinsiEntity;
+import id.wilayah.TugasSpring.repository.ProvinsiRepository;
 import id.wilayah.TugasSpring.service.ProvinsiServiceImpl;
 
 @RestController
 @RequestMapping("/provinsi")
 public class ProvinsiController {
+	@Autowired
+	ProvinsiRepository repo;
+	
 	@Autowired
 	ProvinsiServiceImpl provinsiServiceImpl;
 
@@ -38,6 +42,8 @@ public class ProvinsiController {
 
 	@PostMapping("/post")
 	public ResponseEntity<?> post(@RequestBody ProvinsiDto Dto) {
+		String nama=repo.findNama(Dto.getNamaProvinsi());
+		String kode=repo.findByEntity(Dto.getKodeProvinsi());
 		StatusMessageDto<ProvinsiEntity> result = new StatusMessageDto<>();
 		if (Dto.getKodeProvinsi().isEmpty()) {
 			result.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -47,6 +53,16 @@ public class ProvinsiController {
 		} else if (Dto.getNamaProvinsi().isEmpty()) {
 			result.setStatus(HttpStatus.BAD_REQUEST.value());
 			result.setMessage("Nama Provinsi Kosong");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaProvinsi().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Provinsi sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaProvinsi().equals(kode)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Kode Provinsi sudah ada");
 			result.setData(null);
 			return ResponseEntity.ok(result);
 		} else {
@@ -60,6 +76,8 @@ public class ProvinsiController {
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ProvinsiDto Dto) {
+		String nama=repo.findNama(Dto.getNamaProvinsi());
+		String kode=repo.findByEntity(Dto.getKodeProvinsi());
 		StatusMessageDto<ProvinsiEntity> result = new StatusMessageDto<>();
 		if (Dto.getKodeProvinsi().isEmpty()) {
 			result.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -71,7 +89,17 @@ public class ProvinsiController {
 			result.setMessage("Nama Provinsi Kosong");
 			result.setData(null);
 			return ResponseEntity.ok(result);
-		} else {
+		} else if (Dto.getNamaProvinsi().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Provinsi sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaProvinsi().equals(kode)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Kode Provinsi sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		}  else {
 			ProvinsiEntity provinsiEntity = provinsiServiceImpl.updateProvinsi(id, Dto);
 			result.setStatus(HttpStatus.OK.value());
 			result.setMessage("Berhasil Update");

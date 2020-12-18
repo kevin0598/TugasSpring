@@ -40,6 +40,7 @@ public class KabupatenController {
 
 	@PostMapping("/post")
 	public ResponseEntity<?> post(@RequestBody KabupatenDto Dto) {
+		String nama=repo.findNama(Dto.getNamaKabupaten());
 		String kode = repo2.findByEntity(Dto.getKodeProvinsi());
 		StatusMessageDto<KabupatenEntity> result = new StatusMessageDto<>();
 		if (Dto.getKodeKabupaten().isEmpty()) {
@@ -62,7 +63,12 @@ public class KabupatenController {
 			result.setMessage("Kode Provinsi Tidak ada di Database");
 			result.setData(null);
 			return ResponseEntity.ok(result);
-		} else {
+		} else if (Dto.getNamaKabupaten().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Kabupaten sudah ada");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		}  else {
 			KabupatenEntity kabupatenEntity = service.kabupatenEntity(Dto);
 			result.setStatus(HttpStatus.OK.value());
 			result.setMessage("Berhasil Insert");
@@ -73,6 +79,7 @@ public class KabupatenController {
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody KabupatenDto Dto) {
+		String nama=repo.findNama(Dto.getNamaKabupaten());
 		String kode = repo.findByEntity2(id);
 		StatusMessageDto<KabupatenEntity> result = new StatusMessageDto<>();
 		if (Dto.getKodeKabupaten().isEmpty()) {
@@ -93,6 +100,11 @@ public class KabupatenController {
 		} else if (!kode.equals(Dto.getKodeProvinsi())) {
 			result.setStatus(HttpStatus.BAD_REQUEST.value());
 			result.setMessage("Kode Provinsi Berbeda");
+			result.setData(null);
+			return ResponseEntity.ok(result);
+		} else if (Dto.getNamaKabupaten().equals(nama)) {
+			result.setStatus(HttpStatus.BAD_REQUEST.value());
+			result.setMessage("Nama Kabupaten sudah ada");
 			result.setData(null);
 			return ResponseEntity.ok(result);
 		} else {

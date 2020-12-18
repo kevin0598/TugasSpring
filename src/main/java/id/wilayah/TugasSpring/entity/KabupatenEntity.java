@@ -21,7 +21,7 @@ public class KabupatenEntity implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "kodeKabupaten", nullable = true)
+	@Column(name = "kodeKabupaten", unique = true,nullable = true)
 	private String kodeKabupaten;
 
 	@Column(name = "namaKabupaten", nullable = true)

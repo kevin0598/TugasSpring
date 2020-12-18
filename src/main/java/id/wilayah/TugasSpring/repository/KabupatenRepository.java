@@ -26,5 +26,8 @@ public interface KabupatenRepository extends JpaRepository<KabupatenEntity, Inte
 	String findByEntity(String string);
 
 	KabupatenEntity findByKodeKabupaten(String kodeKabupaten);
+	
+	@Query(value="SELECT nama_kabupaten FROM kabupaten WHERE nama_kabupaten=?",nativeQuery = true)
+	String findNama(String string);
 
 }
