@@ -18,63 +18,65 @@ import id.wilayah.TugasSpring.repository.ProvinsiRepository;
 
 @Service
 @Transactional
-public class DesaServiceImpl implements DesaService{
+public class DesaServiceImpl implements DesaService {
 	@Autowired
 	KabupatenRepository kabupaten;
-	
+
 	@Autowired
 	KecamatanRepository kecamatan;
-	
+
 	@Autowired
 	ProvinsiRepository provinsi;
-	
+
 	@Autowired
 	DesaRepository desa;
 
 	@Override
 	public List<DesaEntity> getAll() {
-		List<DesaEntity> desaEntities=desa.findAll();
+		List<DesaEntity> desaEntities = desa.findAll();
 		return desaEntities;
 	}
 
 	@Override
 	public DesaEntity post(DesaDto Dto) {
-		DesaEntity desaEntity=convertDesaEntity(Dto);
-		ProvinsiEntity provinsiEntity=provinsi.findByKodeProvinsi(Dto.getKodeProvinsi());
-		KabupatenEntity kabupatenEntity=kabupaten.findByKodeKabupaten(Dto.getKodeKabupaten());
-		KecamatanEntity kecamatanEntity=kecamatan.findBykodeKecamatan(Dto.getKodeKecamatan());
+		DesaEntity desaEntity = convertDesaEntity(Dto);
+		ProvinsiEntity provinsiEntity = provinsi.findByKodeProvinsi(Dto.getKodeProvinsi());
+		KabupatenEntity kabupatenEntity = kabupaten.findByKodeKabupaten(Dto.getKodeKabupaten());
+		KecamatanEntity kecamatanEntity = kecamatan.findBykodeKecamatan(Dto.getKodeKecamatan());
 		desaEntity.setKodeKabupaten(kabupatenEntity);
 		desaEntity.setKodeKecamatan(kecamatanEntity);
 		desaEntity.setKodeProvinsi(provinsiEntity);
+		desaEntity.setStatus("Active");
 		desa.save(desaEntity);
 		return desaEntity;
 	}
 
 	@Override
 	public DesaEntity update(Integer id, DesaDto Dto) {
-		DesaEntity desaEntity=desa.findById(id).get();
-		desaEntity.setKodeDesa(Dto.getKodeKecamatan()+"."+Dto.getKodeDesa());
-		desaEntity.setNamaDesa(Dto.getNamaDesa());		
+		DesaEntity desaEntity = desa.findById(id).get();
+		desaEntity.setKodeDesa(Dto.getKodeKecamatan() + "." + Dto.getKodeDesa());
+		desaEntity.setNamaDesa(Dto.getNamaDesa());
 		desa.save(desaEntity);
-		return desaEntity;	
+		return desaEntity;
 	}
 
 	@Override
 	public DesaEntity delete(Integer id) {
-		DesaEntity desaEntity=desa.findById(id).get();
-		desa.delete(desaEntity);
+		DesaEntity desaEntity = desa.findById(id).get();
+		desaEntity.setStatus("Deleted");
+		desa.save(desaEntity);
 		return desaEntity;
 	}
 
 	@Override
 	public DesaEntity getById(Integer id) {
-		DesaEntity desaEntity=desa.findById(id).get();
+		DesaEntity desaEntity = desa.findById(id).get();
 		return desaEntity;
 	}
 
 	@Override
 	public DesaEntity getByKodeDesa(String kode) {
-		DesaEntity desaEntity=desa.findByKodeDesa(kode);
+		DesaEntity desaEntity = desa.findByKodeDesa(kode);
 		return desaEntity;
 	}
 
@@ -95,12 +97,18 @@ public class DesaServiceImpl implements DesaService{
 		List<DesaEntity> desaEntities = desa.findBykodeProvinsi(kode);
 		return desaEntities;
 	}
-	
+
 	public DesaEntity convertDesaEntity(DesaDto Dto) {
-		DesaEntity desaEntity=new DesaEntity();
-		desaEntity.setKodeDesa(Dto.getKodeKecamatan()+"."+Dto.getKodeDesa());
-		desaEntity.setNamaDesa(Dto.getNamaDesa());		
+		DesaEntity desaEntity = new DesaEntity();
+		desaEntity.setKodeDesa(Dto.getKodeKecamatan() + "." + Dto.getKodeDesa());
+		desaEntity.setNamaDesa(Dto.getNamaDesa());
 		return desaEntity;
+	}
+
+	@Override
+	public List<DesaEntity> getStatus(String status) {
+		List<DesaEntity> desaEntities = desa.findStatus(status);
+		return desaEntities;
 	}
 
 }

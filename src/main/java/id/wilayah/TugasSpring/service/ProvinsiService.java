@@ -6,9 +6,15 @@ import id.wilayah.TugasSpring.dto.ProvinsiDto;
 import id.wilayah.TugasSpring.entity.ProvinsiEntity;
 
 public interface ProvinsiService {
-	ProvinsiEntity insertProvinsi(ProvinsiDto Dto);	
+	ProvinsiEntity insertProvinsi(ProvinsiDto Dto);
+
 	List<ProvinsiEntity> getAll();
-	ProvinsiEntity updateProvinsi(Integer id,ProvinsiDto Dto);
+
+	ProvinsiEntity updateProvinsi(Integer id, ProvinsiDto Dto);
+
 	ProvinsiEntity deleteProvinsi(Integer id);
+
 	ProvinsiEntity getbyid(String kodeProvinsi);
+
+	List<ProvinsiEntity> getStatus(String status);
 }

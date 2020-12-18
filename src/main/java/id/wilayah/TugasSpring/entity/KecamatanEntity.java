@@ -14,69 +14,91 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="kecamatan")
-public class KecamatanEntity implements Serializable{
+@Table(name = "kecamatan")
+public class KecamatanEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="kodeKecamatan",nullable = true)
+
+	@Column(name = "kodeKecamatan", nullable = true)
 	private String kodeKecamatan;
-	
-	@Column(name="namaKecamatan",nullable = true)
+
+	@Column(name = "namaKecamatan", nullable = true)
 	private String namaKecamatan;
-	
+
+	@Column(name = "status", nullable = true)
+	private String status;
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="kodeProvinsi",referencedColumnName = "kodeProvinsi")
+	@JoinColumn(name = "kodeProvinsi", referencedColumnName = "kodeProvinsi")
 	private ProvinsiEntity kodeProvinsi;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="kodeKabupaten",referencedColumnName = "kodeKabupaten")
+	@JoinColumn(name = "kodeKabupaten", referencedColumnName = "kodeKabupaten")
 	private KabupatenEntity kodeKabupaten;
 
-	
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getKodeKecamatan() {
 		return kodeKecamatan;
 	}
+
 	public void setKodeKecamatan(String kodeKecamatan) {
 		this.kodeKecamatan = kodeKecamatan;
 	}
+
 	public String getNamaKecamatan() {
 		return namaKecamatan;
 	}
+
 	public void setNamaKecamatan(String namaKecamatan) {
 		this.namaKecamatan = namaKecamatan;
 	}
+
 	public ProvinsiEntity getKodeProvinsi() {
 		return kodeProvinsi;
 	}
+
 	public void setKodeProvinsi(ProvinsiEntity kodeProvinsi) {
 		this.kodeProvinsi = kodeProvinsi;
 	}
+
 	public KabupatenEntity getKodeKabupaten() {
 		return kodeKabupaten;
 	}
+
 	public void setKodeKabupaten(KabupatenEntity kodeKabupaten) {
 		this.kodeKabupaten = kodeKabupaten;
 	}
-	public KecamatanEntity(Integer id, String kodeKecamatan, String namaKecamatan, ProvinsiEntity kodeProvinsi,
-			KabupatenEntity kodeKabupaten) {
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public KecamatanEntity(Integer id, String kodeKecamatan, String namaKecamatan, String status,
+			ProvinsiEntity kodeProvinsi, KabupatenEntity kodeKabupaten) {
 		super();
 		this.id = id;
 		this.kodeKecamatan = kodeKecamatan;
 		this.namaKecamatan = namaKecamatan;
+		this.status = status;
 		this.kodeProvinsi = kodeProvinsi;
 		this.kodeKabupaten = kodeKabupaten;
 	}
+
 	public KecamatanEntity() {
 		super();
 	}
-	
+
 }

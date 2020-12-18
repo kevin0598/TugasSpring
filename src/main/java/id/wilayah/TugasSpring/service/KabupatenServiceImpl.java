@@ -32,6 +32,7 @@ public class KabupatenServiceImpl implements KabupatenService {
 		KabupatenEntity kabupatenEntity=convertToPersonEntity(Dto);
 		ProvinsiEntity provinsiEntity=provinsiRepo.findByKodeProvinsi(Dto.getKodeProvinsi());
 		kabupatenEntity.setEntity(provinsiEntity);
+		kabupatenEntity.setStatus("Active");
 		kabupatenRepository.save(kabupatenEntity);
 		return kabupatenEntity;
 	}
@@ -57,7 +58,8 @@ public class KabupatenServiceImpl implements KabupatenService {
 	@Override
 	public KabupatenEntity delete(Integer id) {
 		KabupatenEntity kabupatenEntity=kabupatenRepository.findById(id).get();
-		kabupatenRepository.delete(kabupatenEntity);
+		kabupatenEntity.setStatus("Deleted");
+		kabupatenRepository.save(kabupatenEntity);
 		return kabupatenEntity;
 	}
 
@@ -69,7 +71,7 @@ public class KabupatenServiceImpl implements KabupatenService {
 	
 	@Override	
 	public KabupatenEntity getbykode(String kodeString) {
-		KabupatenEntity kabupatenEntity=kabupatenRepository.findByKodeKabupaten(kodeString);
+		KabupatenEntity kabupatenEntity = kabupatenRepository.findByKodeKabupaten(kodeString);
 		return kabupatenEntity;
 	}
 
@@ -77,6 +79,12 @@ public class KabupatenServiceImpl implements KabupatenService {
 	public KabupatenEntity getId(Integer id) {
 		KabupatenEntity kabupatenEntities=kabupatenRepository.findById(id).get();		
 		return kabupatenEntities;
+	}
+
+	@Override
+	public List<KabupatenEntity> getStatus(String status) {
+		List<KabupatenEntity> kabupatenEntity=kabupatenRepository.findStatus(status);
+		return kabupatenEntity;
 	}
 	
 }

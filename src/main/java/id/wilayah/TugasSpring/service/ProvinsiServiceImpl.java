@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import id.wilayah.TugasSpring.dto.ProvinsiDto;
 import id.wilayah.TugasSpring.entity.ProvinsiEntity;
 import id.wilayah.TugasSpring.repository.ProvinsiRepository;
@@ -20,19 +19,20 @@ public class ProvinsiServiceImpl implements ProvinsiService {
 
 	@Override
 	public ProvinsiEntity insertProvinsi(ProvinsiDto Dto) {
-		ProvinsiEntity provinsiEntity=convertToPersonEntity(Dto);
+		ProvinsiEntity provinsiEntity = convertToPersonEntity(Dto);
+		provinsiEntity.setStatus("Active");
 		provinsiRepository.save(provinsiEntity);
 		return provinsiEntity;
 	}
 
 	@Override
 	public List<ProvinsiEntity> getAll() {
-		List<ProvinsiEntity> provinsiEntity=provinsiRepository.findAll();
+		List<ProvinsiEntity> provinsiEntity = provinsiRepository.findAll();
 		return provinsiEntity;
 	}
 
 	public ProvinsiEntity convertToPersonEntity(ProvinsiDto Dto) {
-		ProvinsiEntity provinsiEntity=new ProvinsiEntity();
+		ProvinsiEntity provinsiEntity = new ProvinsiEntity();
 		provinsiEntity.setKodeProvinsi(Dto.getKodeProvinsi());
 		provinsiEntity.setNamaProvinsi(Dto.getNamaProvinsi());
 		return provinsiEntity;
@@ -40,7 +40,7 @@ public class ProvinsiServiceImpl implements ProvinsiService {
 
 	@Override
 	public ProvinsiEntity updateProvinsi(Integer id, ProvinsiDto Dto) {
-		ProvinsiEntity provsinEntity=provinsiRepository.findById(id).get();
+		ProvinsiEntity provsinEntity = provinsiRepository.findById(id).get();
 		provsinEntity.setKodeProvinsi(Dto.getKodeProvinsi());
 		provsinEntity.setNamaProvinsi(Dto.getNamaProvinsi());
 		provinsiRepository.save(provsinEntity);
@@ -49,16 +49,22 @@ public class ProvinsiServiceImpl implements ProvinsiService {
 
 	@Override
 	public ProvinsiEntity deleteProvinsi(Integer id) {
-		ProvinsiEntity provinsiEntity=provinsiRepository.findById(id).get();
-		provinsiRepository.delete(provinsiEntity);
+		ProvinsiEntity provinsiEntity = provinsiRepository.findById(id).get();
+		provinsiEntity.setStatus("Deleted");
+		provinsiRepository.save(provinsiEntity);
 		return provinsiEntity;
 	}
 
 	@Override
 	public ProvinsiEntity getbyid(String kodeProvinsi) {
-		ProvinsiEntity provinsiEntities=provinsiRepository.findByKodeProvinsi(kodeProvinsi);
+		ProvinsiEntity provinsiEntities = provinsiRepository.findByKodeProvinsi(kodeProvinsi);
 		return provinsiEntities;
 	}
 
+	@Override
+	public List<ProvinsiEntity> getStatus(String status) {
+		List<ProvinsiEntity> provinsiEntities = provinsiRepository.findStatus(status);
+		return provinsiEntities;
+	}
 
 }
